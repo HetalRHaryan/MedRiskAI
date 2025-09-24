@@ -1,0 +1,13 @@
+{"columns":[
+    "age",
+    "sex",
+    "cp",
+    "trestbps",
+    "chol",
+    "fbs",
+    "restecg",
+    "thalach",
+    "slope",
+    "ca",
+    "thal"
+]}

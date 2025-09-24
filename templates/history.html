@@ -1,0 +1,82 @@
+
+
+{% extends "base.html" %}
+{% block title %}Prediction History{% endblock %}
+{% block content %}
+<div class="container mt-4">
+
+  <!-- Breadcrumb Navigation -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Prediction History</li>
+    </ol>
+  </nav>
+
+  <h2 class="mb-4">Your Prediction History</h2>
+
+  {% if logs %}
+  <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Disease</th>
+          <th scope="col">Date</th>
+          <th scope="col">Result</th>
+          <th scope="col">Input Details</th>
+          <th scope="col">Report</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <!-- Disease Name -->
+          <td>{{ log.disease.capitalize() }}</td>
+
+          <!-- Date -->
+          <td>{{ log.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+
+          <!-- Human-readable Prediction Result -->
+          <td>
+            {% set res = log.prediction_result|string %}
+            {% if res in ['0', 'low', 'Low Risk'] %}
+              <span class="badge bg-success">Low Risk</span>
+            {% elif res in ['1', 'high', 'High Risk'] %}
+              <span class="badge bg-danger">High Risk</span>
+            {% else %}
+              <span class="badge bg-secondary">{{ res }}</span>
+            {% endif %}
+          </td>
+
+          <!-- Pretty-printed input JSON -->
+          <td>
+            <ul class="list-unstyled mb-0">
+              {% set input_data = log.input_data %}
+              {% if input_data is string %}
+                {% set input_data = input_data | tojson | loads %}
+              {% endif %}
+              {% for key, value in input_data.items() %}
+              <li><strong>{{ key.replace('_', ' ').capitalize() }}:</strong> {{ value }}</li>
+              {% endfor %}
+            </ul>
+          </td>
+
+          <!-- PDF Download -->
+          <td>
+            <a href="{{ url_for('download_pdf', log_id=log.id) }}"
+               class="btn btn-sm btn-outline-primary">Download PDF</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="alert alert-info" role="alert">
+    You have no prediction history yet.
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
+

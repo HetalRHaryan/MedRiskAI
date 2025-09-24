@@ -1,0 +1,370 @@
+<!-- prediction form HTML -->
+ {% extends "base.html" %}
+{% block title %}Predict {{ disease.capitalize() }} Risk{% endblock %}
+{% block content %}
+<h2>Predict {{ disease.capitalize() }} Risk</h2>
+
+<form method="POST" action="{{ url_for('predict', disease=disease) }}">
+  <!-- Example fields - customize based on disease -->
+  <!-- <div class="mb-3">
+    <label for="age" class="form-label">Age</label>
+    <input type="number" class="form-control" id="age" name="age" required />
+  </div> -->
+
+  {% if disease == 'heart' %}
+  <div class="form-grid">
+    <div>
+      <label for="age">Age:</label>
+      <input class="form-control" type="number" id="age" name="age" min="1" max="120" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="sex">Gender:</label>
+      <select class="form-select" id="sex" name="sex" required>
+        <option value="">Select</option>
+        <option value="1">Male</option>
+        <option value="0">Female</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="cp">Chest Pain Type (0-3):</label>
+      <input class="form-control" type="number" id="cp" name="cp" min="0" max="3" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="trestbps">Resting Blood Pressure:</label>
+      <input class="form-control" type="number" id="trestbps" name="trestbps" min="80" max="200" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="chol">Serum Cholesterol (mg/dl):</label>
+      <input class="form-control" type="number" id="chol" name="chol" min="100" max="600" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="fbs">Fasting Blood Sugar > 120 mg/dl:</label>
+      <select class="form-select" id="fbs" name="fbs" required>
+        <option value="">Select</option>
+        <option value="1">True</option>
+        <option value="0">False</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="restecg">Resting ECG Results (0-2):</label>
+      <input class="form-control" type="number" id="restecg" name="restecg" min="0" max="2" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="thalach">Max Heart Rate Achieved:</label>
+      <input class="form-control" type="number" id="thalach" name="thalach" min="60" max="220" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="slope">Slope of the Peak Exercise ST Segment (0-2):</label>
+      <input class="form-control" type="number" id="slope" name="slope" min="0" max="2" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="ca">Number of Major Vessels Colored by Fluoroscopy (0-3):</label>
+      <input class="form-control" type="number" id="ca" name="ca" min="0" max="3" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="thal">Thalassemia (1=normal; 2=fixed defect; 3=reversible defect):</label>
+      <input class="form-control" type="number" id="thal" name="thal" min="1" max="3" required />
+    </div>
+  {% elif disease == 'kidney' %}  
+  <div class="mb-3">
+      <label for="age">Age:</label>
+      <input class="form-control" type="number" name="age" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="bp">Blood Pressure:</label>
+      <input class="form-control" type="number" name="bp" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="sg">Specific Gravity:</label>
+      <select class="form-select" name="sg" required>
+        <option value="1.005">1.005</option>
+        <option value="1.010">1.010</option>
+        <option value="1.015">1.015</option>
+        <option value="1.020">1.020</option>
+        <option value="1.025">1.025</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="al">Albumin:</label>
+      <select class="form-select" name="al" required>
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="su">Sugar:</label>
+      <select class="form-select" name="su" required>
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="rbc">Red Blood Cells:</label>
+      <select class="form-select" name="rbc" required>
+        <option value="0">Normal</option>
+        <option value="1">Abnormal</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="pc">Pus Cell:</label>
+      <select class="form-select" name="pc" required>
+        <option value="0">Normal</option>
+        <option value="1">Abnormal</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="pcc">Pus Cell Clumps:</label>
+      <select class="form-select" name="pcc" required>
+        <option value="0">Not Present</option>
+        <option value="1">Present</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="ba">Bacteria:</label>
+      <select class="form-select" name="ba" required>
+        <option value="0">Not Present</option>
+        <option value="1">Present</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="bgr">Blood Glucose Random:</label>
+      <input class="form-control" type="number" name="bgr" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="bu">Blood Urea:</label>
+      <input class="form-control" type="number" name="bu" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="sc">Serum Creatinine:</label>
+      <input class="form-control" type="number" step="0.01" name="sc" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="sod">Sodium:</label>
+      <input class="form-control" type="number" name="sod" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="pot">Potassium:</label>
+      <input class="form-control" type="number" step="0.1" name="pot" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="hemo">Hemoglobin:</label>
+      <input class="form-control" type="number" step="0.1" name="hemo" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="pcv">Packed Cell Volume:</label>
+      <input class="form-control" type="number" name="pcv" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="wc">White Blood Cell Count:</label>
+      <input class="form-control" type="number" name="wc" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="rc">Red Blood Cell Count:</label>
+      <input class="form-control" type="number" step="0.01" name="rc" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="htn">Hypertension:</label>
+      <select class="form-select" name="htn" required>
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="dm">Diabetes Mellitus:</label>
+      <select class="form-select" name="dm" required>
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="cad">Coronary Artery Disease:</label>
+      <select class="form-select" name="cad" required>
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="appet">Appetite:</label>
+      <select class="form-select" name="appet" required>
+        <option value="1">Good</option>
+        <option value="0">Poor</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="pe">Pedal Edema:</label>
+      <select class="form-select" name="pe" required>
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="ane">Anemia:</label>
+      <select class="form-select" name="ane" required>
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+    </div>
+  {% elif disease == 'liver' %}
+  <!-- <div class="mb-3">
+    <label for="gender" class="form-label">Gender</label>
+    <select class="form-select" id="gender" name="gender" required>
+      <option value="" disabled selected>Select gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="medical_history" class="form-label">Medical History</label>
+    <textarea class="form-control" id="medical_history" name="medical_history" rows="3"></textarea>
+  </div> -->
+  <div class="mb-3">
+      <label for="Age">Age:</label>
+      <input class="form-control" type="number" name="Age" required min="1" max="120" />
+    </div>
+
+    <div class="mb-3">
+      <label for="Gender">Gender:</label>
+      <select class="form-select" name="Gender" required>
+        <option value="1">Male</option>
+        <option value="0">Female</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="Alamine_Aminotransferase">Alamine Aminotransferase (IU/L):</label>
+      <input class="form-control" type="number" name="Alamine_Aminotransferase" required min="0" />
+    </div>
+
+    <div class="mb-3">
+      <label for="Aspartate_Aminotransferase">Aspartate Aminotransferase (IU/L):</label>
+      <input class="form-control" type="number" name="Aspartate_Aminotransferase" required min="0" />
+    </div>
+
+    <div class="mb-3">
+      <label for="Total_Protiens">Total Proteins (g/dL):</label>
+      <input class="form-control" type="number" step="0.01" name="Total_Protiens" required min="0" />
+    </div>
+
+    <div class="mb-3">
+      <label for="Albumin">Albumin (g/dL):</label>
+      <input class="form-control" type="number" step="0.01" name="Albumin" required min="0" />
+    </div>
+
+    <div class="mb-3">
+      <label for="Albumin_and_Globulin_Ratio">Albumin and Globulin Ratio:</label>
+      <input class="form-control" type="number" step="0.01" name="Albumin_and_Globulin_Ratio" required min="0" />
+    </div>
+  {% elif disease == 'diabetes' %}
+  <!-- <div class="mb-3">
+    <label for="blood_sugar" class="form-label">Blood Sugar Level</label>
+    <input type="number" class="form-control" id="blood_sugar" name="blood_sugar" required />
+  </div>
+  <div class="mb-3">
+    <label for="bmi" class="form-label">BMI</label>
+    <input type="number" step="0.1" class="form-control" id="bmi" name="bmi" required />
+  </div>
+  <div class="mb-3">
+    <label for="family_history" class="form-label">Family History</label>
+    <textarea class="form-control" id="family_history" name="family_history" rows="3"></textarea>
+  </div> -->
+      <div class="mb-3">
+      <label for="gender">Gender:</label>
+      <select class="form-select" name="gender" id="gender" required>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="age">Age:</label>
+      <input class="form-control" type="number" name="age" id="age" required min="1" max="120" />
+    </div>
+
+    <div class="mb-3">
+      <label for="hypertension">Hypertension:</label>
+      <select class="form-select" name="hypertension" required>
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="heart_disease">Heart Disease:</label>
+      <select class="form-select" name="heart_disease" required>
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="bmi">BMI:</label>
+      <input class="form-control" type="number" step="0.1" name="bmi" required min="10" max="60" />
+    </div>
+
+    <div class="mb-3">
+      <label for="HbA1c_level">HbA1c Level:</label>
+      <input class="form-control" type="number" step="0.1" name="HbA1c_level" required min="4" max="15" />
+    </div>
+
+    <div class="mb-3">
+      <label for="blood_glucose_level">Blood Glucose Level:</label>
+      <input class="form-control" type="number" name="blood_glucose_level" required min="50" max="300" />
+    </div>
+
+    <div class="mb-3"> 
+      <label for="smoking_status">Smoking Status:</label>
+      <select class="form-select" name="smoking_status" required>
+        <option value="ever">Ever Smoked</option>
+        <option value="former">Former Smoker</option>
+        <option value="never">Never Smoked</option>
+        <option value="not current">Not Currently Smoking</option>
+      </select>
+    </div>
+
+  {% endif %}
+
+  <button type="submit" class="btn btn-success">Predict</button>
+</form>
+
+{% endblock %}
